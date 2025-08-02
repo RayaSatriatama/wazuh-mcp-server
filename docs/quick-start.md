@@ -106,9 +106,18 @@ export WAZUH_INDEXER_HOST=your-host
 export WAZUH_MANAGER_HOST=your-host
 # ... other variables
 
-# Run servers
-python -m wazuh_indexer.server --port 8001 &
-python -m wazuh_manager.server --port 8002 &
+# Option 1: Use server manager (recommended)
+python -m src.wazuh_mcp_server.server_manager start-all
+
+# Option 2: Run servers individually
+python -m src.wazuh_mcp_server.wazuh_indexer.server --port 8001 &
+python -m src.wazuh_mcp_server.wazuh_manager.server --port 8002 &
+
+# Check server status
+python -m src.wazuh_mcp_server.server_manager status
+
+# Stop all servers
+python -m src.wazuh_mcp_server.server_manager stop-all
 ```
 
 ## 🎉 Success!

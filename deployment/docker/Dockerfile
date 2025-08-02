@@ -25,8 +25,7 @@ RUN pip install --upgrade pip --timeout 300 && \
     pip install --no-cache-dir -r requirements-mcp.txt --timeout 300 --retries 3
 
 # Copy only necessary application files
-COPY wazuh_indexer/ ./wazuh_indexer/
-COPY wazuh_manager/ ./wazuh_manager/
+COPY src/ ./src/
 COPY __init__.py ./__init__.py
 
 # Create non-root user for security

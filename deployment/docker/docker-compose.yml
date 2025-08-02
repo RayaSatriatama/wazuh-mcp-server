@@ -22,7 +22,7 @@ services:
       - "host.docker.internal:host-gateway"
     command: >
       sh -c "
-      python -m wazuh_manager.server --port 8002
+      python -m src.wazuh_mcp_server.wazuh_manager.server --port 8002
       "
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
@@ -52,7 +52,7 @@ services:
       - "host.docker.internal:host-gateway"
     command: >
       sh -c "
-      python -m wazuh_indexer.server --port 8001
+      python -m src.wazuh_mcp_server.wazuh_indexer.server --port 8001
       "
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
@@ -84,7 +84,7 @@ services:
       - "host.docker.internal:host-gateway"
     command: >
       sh -c "
-      python -m wazuh_manager.server --stdio
+      python -m src.wazuh_mcp_server.wazuh_manager.server --stdio
       "
     networks:
       - mcp-network
@@ -108,7 +108,7 @@ services:
       - "host.docker.internal:host-gateway"
     command: >
       sh -c "
-      python -m wazuh_indexer.server --stdio
+      python -m src.wazuh_mcp_server.wazuh_indexer.server --stdio
       "
     networks:
       - mcp-network
@@ -138,7 +138,7 @@ services:
       - "host.docker.internal:host-gateway"
     command: >
       sh -c "
-      python -c 'from wazuh_manager.server import mcp; import asyncio; mcp.run(transport=\"sse\", host=\"0.0.0.0\", port=8004)'
+      python -c 'from src.wazuh_mcp_server.wazuh_manager.server import mcp; import asyncio; mcp.run(transport=\"sse\", host=\"0.0.0.0\", port=8004)'
       "
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8004/sse/"]
@@ -170,7 +170,7 @@ services:
       - "host.docker.internal:host-gateway"
     command: >
       sh -c "
-      python -c 'from wazuh_indexer.server import mcp; import asyncio; mcp.run(transport=\"sse\", host=\"0.0.0.0\", port=8003)'
+      python -c 'from src.wazuh_mcp_server.wazuh_indexer.server import mcp; import asyncio; mcp.run(transport=\"sse\", host=\"0.0.0.0\", port=8003)'
       "
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8003/sse/"]

@@ -19,55 +19,66 @@ Get started in 5 minutes with our comprehensive documentation:
 
 ```
 wazuh-mcp-server/
-├── wazuh_indexer/          # Wazuh Indexer MCP Server
-│   ├── config/             # Configuration modules
-│   │   ├── base_config.py
-│   │   └── indexer_config.py
-│   ├── services/           # Service implementations
-│   │   └── indexer_service.py
-│   ├── utils/              # Utilities
-│   │   └── logger.py
-│   ├── tools/              # MCP tools
-│   │   ├── cluster_tools.py
-│   │   ├── index_tools.py
-│   │   ├── monitoring_tools.py
-│   │   ├── search_tools.py
-│   │   ├── security_tools.py
-│   │   └── tool_clients.py
-│   └── server.py           # Main server entry point
-├── wazuh_manager/          # Wazuh Manager MCP Server
-│   ├── config/             # Configuration modules
-│   │   ├── base_config.py
-│   │   └── manager_config.py
-│   ├── services/           # Service implementations
-│   │   └── manager_service.py
-│   ├── utils/              # Utilities
-│   │   └── logger.py
-│   ├── tools/              # MCP tools
-│   │   ├── agents.py
-│   │   ├── api_info.py
-│   │   ├── cluster.py
-│   │   ├── decoders.py
-│   │   ├── experimental.py
-│   │   ├── groups.py
-│   │   ├── lists.py
-│   │   ├── manager.py
-│   │   ├── mitre.py
-│   │   ├── overview.py
-│   │   ├── rootcheck.py
-│   │   ├── rules.py
-│   │   ├── sca.py
-│   │   ├── security.py
-│   │   ├── syscollector.py
-│   │   ├── syscheck.py
-│   │   ├── tasks.py
-│   │   └── wazuh_manager_base_api.py
-│   └── server.py           # Main server entry point
+├── src/                    # Source code package
+│   └── wazuh_mcp_server/   # Main application package
+│       ├── wazuh_indexer/  # Wazuh Indexer MCP Server
+│       │   ├── config/     # Configuration modules
+│       │   │   ├── base_config.py
+│       │   │   └── indexer_config.py
+│       │   ├── services/   # Service implementations
+│       │   │   └── indexer_service.py
+│       │   ├── utils/      # Utilities
+│       │   │   └── logger.py
+│       │   ├── tools/      # MCP tools
+│       │   │   ├── cluster_tools.py
+│       │   │   ├── index_tools.py
+│       │   │   ├── monitoring_tools.py
+│       │   │   ├── search_tools.py
+│       │   │   ├── security_tools.py
+│       │   │   └── tool_clients.py
+│       │   └── server.py   # Main server entry point
+│       ├── wazuh_manager/  # Wazuh Manager MCP Server
+│       │   ├── config/     # Configuration modules
+│       │   │   ├── base_config.py
+│       │   │   └── manager_config.py
+│       │   ├── services/   # Service implementations
+│       │   │   └── manager_service.py
+│       │   ├── utils/      # Utilities
+│       │   │   └── logger.py
+│       │   ├── tools/      # MCP tools
+│       │   │   ├── agents.py
+│       │   │   ├── api_info.py
+│       │   │   ├── cluster.py
+│       │   │   ├── decoders.py
+│       │   │   ├── experimental.py
+│       │   │   ├── groups.py
+│       │   │   ├── lists.py
+│       │   │   ├── manager.py
+│       │   │   ├── mitre.py
+│       │   │   ├── overview.py
+│       │   │   ├── rootcheck.py
+│       │   │   ├── rules.py
+│       │   │   ├── sca.py
+│       │   │   ├── security.py
+│       │   │   ├── syscollector.py
+│       │   │   ├── syscheck.py
+│       │   │   ├── tasks.py
+│       │   │   └── wazuh_manager_base_api.py
+│       │   └── server.py   # Main server entry point
+│       ├── server_manager.py  # Server management CLI
+│       └── __init__.py     # Package initialization
+├── config/                 # Configuration templates
+│   └── .env.example        # Environment configuration template
 ├── deployment/             # Docker deployment
 │   └── docker/
 │       ├── docker-compose.yml
-│       └── config.env
-└── common/                 # Shared utilities and configurations
+│       └── Dockerfile
+├── docs/                   # Documentation
+├── tests/                  # Test suite
+├── pyproject.toml          # Modern Python package configuration
+├── SECURITY.md             # Security policy
+├── CHANGELOG.md            # Version history
+└── README.md               # Project documentation
 ```
 
 ## Features
@@ -139,6 +150,25 @@ curl http://localhost:8002/health  # Manager
 ```
 
 For detailed installation instructions, see the **[Installation Guide](./docs/installation.md)**.
+
+## 🎛️ Server Management
+
+Use the built-in server manager for easy development and testing:
+
+```bash
+# Start all MCP servers
+uvx --from fastmcp python -m src.wazuh_mcp_server.server_manager start-all
+
+# Check server status  
+uvx --from fastmcp python -m src.wazuh_mcp_server.server_manager status
+
+# Stop all servers
+uvx --from fastmcp python -m src.wazuh_mcp_server.server_manager stop-all
+
+# Start individual servers
+uvx --from fastmcp python -m src.wazuh_mcp_server.server_manager start wazuh_indexer
+uvx --from fastmcp python -m src.wazuh_mcp_server.server_manager start wazuh_manager
+```
 
 ## 🏗️ Architecture
 

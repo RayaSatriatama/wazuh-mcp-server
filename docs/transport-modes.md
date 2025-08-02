@@ -161,10 +161,10 @@ docker compose --profile stdio up --no-deps
 **Test STDIO manually:**
 ```bash
 # Test indexer
-docker exec -i wazuh-indexer-mcp-stdio python -m wazuh_indexer.server
+docker exec -i wazuh-indexer-mcp-stdio python -m src.wazuh_mcp_server.wazuh_indexer.server
 
 # Test manager
-docker exec -i wazuh-manager-mcp-stdio python -m wazuh_manager.server
+docker exec -i wazuh-manager-mcp-stdio python -m src.wazuh_mcp_server.wazuh_manager.server
 ```
 
 ### MCP Client Configuration
@@ -349,7 +349,7 @@ if (typeof EventSource !== 'undefined') {
 docker ps --filter "name=stdio"
 
 # Test manually
-docker exec -it wazuh-indexer-mcp-stdio python -m wazuh_indexer.server
+docker exec -it wazuh-indexer-mcp-stdio python -m src.wazuh_mcp_server.wazuh_indexer.server
 ```
 
 **MCP client configuration:**

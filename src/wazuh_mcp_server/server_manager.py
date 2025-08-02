@@ -55,7 +55,7 @@ class SimpleServerManager:
             print(f"🚀 Starting {server_name} server with {transport.upper()} transport...")
 
             # Build command with transport arguments using module execution to avoid import errors
-            cmd = [sys.executable, "-m", f"{server_name}.server"]
+            cmd = [sys.executable, "-m", f"src.wazuh_mcp_server.{server_name}.server"]
 
             # Note: Servers are configured to run in their default mode
             # Transport and ports are handled by server configuration
@@ -181,22 +181,22 @@ def main():
         epilog="""
 Examples:
   # Start all servers in STDIO mode (default - for Cursor/Claude Desktop)
-  python run_all_servers.py --start-all
+  python server_manager.py --start-all
 
   # Start all servers as HTTP servers
-  python run_all_servers.py --start-all --transport http --host 0.0.0.0
+  python server_manager.py --start-all --transport http --host 0.0.0.0
 
   # Start all servers as SSE servers (legacy MCP standard)
-  python run_all_servers.py --start-all --transport sse --host 0.0.0.0
+  python server_manager.py --start-all --transport sse --host 0.0.0.0
 
   # Start only indexer server in HTTP mode
-  python run_all_servers.py --start wazuh_indexer --transport http
+  python server_manager.py --start wazuh_indexer --transport http
 
   # Stop all servers
-  python run_all_servers.py --stop-all
+  python server_manager.py --stop-all
 
   # Show server status
-  python run_all_servers.py --status
+  python server_manager.py --status
         """
     )
 
