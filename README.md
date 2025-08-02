@@ -67,14 +67,18 @@ wazuh-mcp-server/
 │       │   └── server.py   # Main server entry point
 │       ├── server_manager.py  # Server management CLI
 │       └── __init__.py     # Package initialization
-├── config/                 # Configuration templates
-│   └── .env.example        # Environment configuration template
 ├── deployment/             # Docker deployment
-│   └── docker/
-│       ├── docker-compose.yml
-│       └── Dockerfile
+│   ├── .env.docker.example      # Docker environment template
+│   ├── .env.production.example  # Production environment template
+│   ├── docker/
+│   │   ├── docker-compose.yml
+│   │   ├── Dockerfile
+│   │   └── nginx.conf
+│   ├── requirements-mcp.txt     # Python dependencies
+│   └── README.md               # Deployment documentation
 ├── docs/                   # Documentation
 ├── tests/                  # Test suite
+├── .env.example            # Environment configuration template
 ├── pyproject.toml          # Modern Python package configuration
 ├── SECURITY.md             # Security policy
 ├── CHANGELOG.md            # Version history

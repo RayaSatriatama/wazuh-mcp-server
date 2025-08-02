@@ -47,7 +47,7 @@ These tests specifically verify:
 ## Prerequisites
 
 Ensure you have:
-1. Environment variables configured (see `../deployment/config/env.production.example`)
+1. Environment variables configured (see `../deployment/.env.production.example`)
 2. Wazuh API access (for integration tests)
 3. Required dependencies installed (`pip install -r ../deployment/requirements-mcp.txt`)
 

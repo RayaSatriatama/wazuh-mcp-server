@@ -66,7 +66,7 @@ The Wazuh MCP Server is a bridge that exposes Wazuh's security monitoring and SI
 
 2. **Configure environment**
    ```bash
-   cp deployment/docker/.env.example deployment/docker/.env
+   cp deployment/.env.docker.example deployment/docker/.env
    # Edit .env with your Wazuh credentials
    ```
 

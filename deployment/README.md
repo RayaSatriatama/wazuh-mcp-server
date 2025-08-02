@@ -6,15 +6,16 @@ This folder contains all deployment-related files and configurations for the Waz
 
 ```text
 deployment/
+├── .env.docker.example     # Docker environment template
+├── .env.production.example # Production environment template
 ├── docker/                 # Docker containers and orchestration
 │   ├── Dockerfile          # Production Docker image
 │   ├── docker-compose.yml  # Docker Compose for server setup
 │   └── nginx.conf         # Nginx reverse proxy configuration
-├── config/                # Deployment configurations
-│   └── env.production.example  # Production environment template
 ├── requirements-mcp.txt   # Lightweight MCP-specific dependencies
-├── deploy-production.sh   # Production deployment script
-└── UVICORN_DOCKER_DEPLOYMENT_GUIDE.md  # Deployment guide
+├── start-docker.sh        # Docker startup script (Linux/macOS)
+├── start-docker.bat       # Docker startup script (Windows)
+└── README.md              # This file
 ```
 
 ## Quick Start
@@ -41,7 +42,7 @@ docker-compose up --build
 
 ## Configuration
 
-1. Copy `config/env.production.example` to `.env`
+1. Copy `.env.production.example` to `.env`
 2. Update environment variables for your setup
 3. Adjust Docker Compose ports and resource limits as needed
 4. Configure Nginx reverse proxy for production load balancing
