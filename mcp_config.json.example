@@ -1,0 +1,83 @@
+{
+  "// Comments are not allowed in JSON, this is an example file": "Copy sections as needed to your actual mcp.json",
+
+  "mcpServers": {
+    "// STDIO Mode - Recommended for Cursor/Claude Desktop": {
+      "// The client starts the server process and communicates via stdin/stdout": "",
+      "// This is the preferred mode for MCP clients": "",
+      "// Use absolute paths to avoid path resolution issues": "",
+      "// Windows: .venv/Scripts/python.exe, Linux/macOS: .venv/bin/python": ""
+    },
+    "wazuh_indexer_stdio": {
+      "command": "D:\\Projects\\Programming_Projects\\wazuh-mcp-server\\.venv\\Scripts\\python.exe",
+      "args": ["-m", "wazuh_indexer.server"],
+      "cwd": "D:\\Projects\\Programming_Projects\\wazuh-mcp-server",
+      "env": {
+        "WAZUH_INDEXER_URL": "https://localhost:9200",
+        "WAZUH_INDEXER_USERNAME": "admin",
+        "WAZUH_INDEXER_PASSWORD": "admin",
+        "WAZUH_INDEXER_PORT": "8001"
+      }
+    },
+    "wazuh_manager_stdio": {
+      "command": "D:\\Projects\\Programming_Projects\\wazuh-mcp-server\\.venv\\Scripts\\python.exe",
+      "args": ["-m", "wazuh_manager.server"],
+      "cwd": "D:\\Projects\\Programming_Projects\\wazuh-mcp-server",
+      "env": {
+        "WAZUH_MANAGER_URL": "https://localhost:55000",
+        "WAZUH_MANAGER_USERNAME": "wazuh-wui",
+        "WAZUH_MANAGER_PASSWORD": "MyS3cr37P450r.*-",
+        "WAZUH_MANAGER_PORT": "8002"
+      }
+    },
+
+    "// HTTP Mode - Connect to running servers": {
+      "// First start servers: python run_all_servers.py --start-all --transport http": "",
+      "// Then use these URL configurations": ""
+    },
+    "wazuh_indexer_http": {
+      "url": "http://localhost:8001/mcp"
+    },
+    "wazuh_manager_http": {
+      "url": "http://localhost:8002/mcp"
+    },
+
+    "// SSE Mode - Legacy Server-Sent Events": {
+      "// First start servers: python run_all_servers.py --start-all --transport sse": "",
+      "// For older MCP implementations": ""
+    },
+    "wazuh_indexer_sse": {
+      "url": "http://localhost:8001/sse"
+    },
+    "wazuh_manager_sse": {
+      "url": "http://localhost:8002/sse"
+    },
+
+    "// Direct Execution - Not recommended": {
+      "// May cause import errors, use module execution instead": "",
+      "// Requires PYTHONPATH to be set": ""
+    },
+    "wazuh_indexer_direct": {
+      "command": "D:\\Projects\\Programming_Projects\\wazuh-mcp-server\\.venv\\Scripts\\python.exe",
+      "args": ["wazuh_indexer/server.py"],
+      "cwd": "D:\\Projects\\Programming_Projects\\wazuh-mcp-server",
+      "env": {
+        "PYTHONPATH": "D:\\Projects\\Programming_Projects\\wazuh-mcp-server",
+        "WAZUH_INDEXER_URL": "https://localhost:9200",
+        "WAZUH_INDEXER_USERNAME": "admin",
+        "WAZUH_INDEXER_PASSWORD": "admin"
+      }
+    },
+    "wazuh_manager_direct": {
+      "command": "D:\\Projects\\Programming_Projects\\wazuh-mcp-server\\.venv\\Scripts\\python.exe",
+      "args": ["wazuh_manager/server.py"],
+      "cwd": "D:\\Projects\\Programming_Projects\\wazuh-mcp-server",
+      "env": {
+        "PYTHONPATH": "D:\\Projects\\Programming_Projects\\wazuh-mcp-server",
+        "WAZUH_MANAGER_URL": "https://localhost:55000",
+        "WAZUH_MANAGER_USERNAME": "wazuh-wui",
+        "WAZUH_MANAGER_PASSWORD": "MyS3cr37P450r.*-"
+      }
+    }
+  }
+}

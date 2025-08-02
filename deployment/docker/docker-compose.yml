@@ -1,0 +1,188 @@
+services:
+  # ============================================================================
+  # HTTP/ASGI MODE SERVERS (Default - For Production)
+  # ============================================================================
+  
+  # Wazuh Manager MCP Server - HTTP Mode
+  wazuh-manager-mcp:
+    build:
+      context: ../..
+      dockerfile: deployment/docker/Dockerfile
+    container_name: wazuh-manager-mcp
+    restart: unless-stopped
+    ports:
+      - "8002:8002"
+    env_file:
+      - ./.env
+    environment:
+      - PYTHONPATH=/app
+      - WAZUH_MANAGER_MCP_PORT=8002
+      - MCP_TRANSPORT=http
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: >
+      sh -c "
+      python -m wazuh_manager.server --port 8002
+      "
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - mcp-network
+
+  # Wazuh Indexer MCP Server - HTTP Mode
+  wazuh-indexer-mcp:
+    build:
+      context: ../..
+      dockerfile: deployment/docker/Dockerfile
+    container_name: wazuh-indexer-mcp
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    env_file:
+      - ./.env
+    environment:
+      - PYTHONPATH=/app
+      - WAZUH_INDEXER_MCP_PORT=8001
+      - MCP_TRANSPORT=http
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: >
+      sh -c "
+      python -m wazuh_indexer.server --port 8001
+      "
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - mcp-network
+
+  # ============================================================================
+  # STDIO MODE SERVERS (For MCP Clients like Cursor/Claude Desktop)
+  # ============================================================================
+  
+  # Wazuh Manager MCP Server - STDIO Mode
+  wazuh-manager-mcp-stdio:
+    build:
+      context: ../..
+      dockerfile: deployment/docker/Dockerfile
+    container_name: wazuh-manager-mcp-stdio
+    restart: "no"  # STDIO mode doesn't run continuously
+    env_file:
+      - ./.env
+    environment:
+      - PYTHONPATH=/app
+      - WAZUH_MANAGER_MCP_PORT=8002
+      - MCP_TRANSPORT=stdio
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: >
+      sh -c "
+      python -m wazuh_manager.server --stdio
+      "
+    networks:
+      - mcp-network
+    profiles:
+      - stdio
+
+  # Wazuh Indexer MCP Server - STDIO Mode
+  wazuh-indexer-mcp-stdio:
+    build:
+      context: ../..
+      dockerfile: deployment/docker/Dockerfile
+    container_name: wazuh-indexer-mcp-stdio
+    restart: "no"  # STDIO mode doesn't run continuously
+    env_file:
+      - ./.env
+    environment:
+      - PYTHONPATH=/app
+      - WAZUH_INDEXER_MCP_PORT=8001
+      - MCP_TRANSPORT=stdio
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: >
+      sh -c "
+      python -m wazuh_indexer.server --stdio
+      "
+    networks:
+      - mcp-network
+    profiles:
+      - stdio
+
+  # ============================================================================
+  # SSE MODE SERVERS (For Server-Sent Events)
+  # ============================================================================
+  
+  # Wazuh Manager MCP Server - SSE Mode
+  wazuh-manager-mcp-sse:
+    build:
+      context: ../..
+      dockerfile: deployment/docker/Dockerfile
+    container_name: wazuh-manager-mcp-sse
+    restart: unless-stopped
+    ports:
+      - "8004:8004"  # Different port for SSE
+    env_file:
+      - ./.env
+    environment:
+      - PYTHONPATH=/app
+      - WAZUH_MANAGER_MCP_PORT=8004
+      - MCP_TRANSPORT=sse
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: >
+      sh -c "
+      python -c 'from wazuh_manager.server import mcp; import asyncio; mcp.run(transport=\"sse\", host=\"0.0.0.0\", port=8004)'
+      "
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8004/sse/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - mcp-network
+    profiles:
+      - sse
+
+  # Wazuh Indexer MCP Server - SSE Mode
+  wazuh-indexer-mcp-sse:
+    build:
+      context: ../..
+      dockerfile: deployment/docker/Dockerfile
+    container_name: wazuh-indexer-mcp-sse
+    restart: unless-stopped
+    ports:
+      - "8003:8003"  # Different port for SSE
+    env_file:
+      - ./.env
+    environment:
+      - PYTHONPATH=/app
+      - WAZUH_INDEXER_MCP_PORT=8003
+      - MCP_TRANSPORT=sse
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: >
+      sh -c "
+      python -c 'from wazuh_indexer.server import mcp; import asyncio; mcp.run(transport=\"sse\", host=\"0.0.0.0\", port=8003)'
+      "
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8003/sse/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - mcp-network
+    profiles:
+      - sse
+
+networks:
+  mcp-network:
+    driver: bridge
